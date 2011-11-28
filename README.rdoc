@@ -1,5 +1,9 @@
 = proc-cache
+インストール
+  gem install proc-cache
+
 プロシージャ(Proc)の実行結果をキャッシュします
+  require 'proc-cache'
   proc{ sleep 3; "heavy task" }.cache!
     => "heavy task" # 3秒後に"heavy task"という文字列が戻ってくる
   proc{ sleep 3; "heavy task" }.cache!
@@ -10,17 +14,16 @@
   lambda{ ... }.cache!
   Proc.new{ ... }.cache!
 
-= オプション
-== キャッシュの有効期限を設定する
+= キャッシュの有効期限を設定する
 Proc#cache!(:expires => キャッシュを保持する秒数)
   require 'active_support/all'
   proc{...}.cache! :expires => 2.hours # 2時間経過するまでキャッシュを使う
 
-== 内部動作を確認したいとき
+= 内部動作を確認したいとき
 ロガー渡せます
   proc{...}.cache! :logger => Logger.new(STDERR) 
 
-== キャッシュのパスを変更したいとき
+= キャッシュのパスを変更したいとき
 デフォルトだと/tmp/実行スクリプト名.cacheです。
   proc{...}.cache! :cache_path => './test.cache'
 
