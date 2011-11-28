@@ -4,9 +4,9 @@
 
 プロシージャ(Proc)の実行結果をキャッシュします
   require 'proc-cache'
-  proc{ sleep 3; "heavy task" }.cache!
+  p proc{ sleep 3; "heavy task" }.cache!
     => "heavy task" # 3秒後に"heavy task"という文字列が戻ってくる
-  proc{ sleep 3; "heavy task" }.cache!
+  p proc{ sleep 3; "heavy task" }.cache!
     => "heavy task" # ただちに"heavy task"という文字列が戻ってくる
 
 = いろんな書き方
@@ -16,7 +16,6 @@
 
 = キャッシュの有効期限を設定する
 Proc#cache!(:expires => キャッシュを保持する秒数)
-  require 'active_support/all'
   proc{...}.cache! :expires => 2.hours # 2時間経過するまでキャッシュを使う
 
 = 内部動作を確認したいとき
