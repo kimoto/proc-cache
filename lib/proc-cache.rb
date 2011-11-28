@@ -1,8 +1,9 @@
 require 'tmpdir'
+require 'logger'
 
 class Proc
   def cache!(options={})
-    cache_path = tmp_cache_path
+    cache_path = make_cache_path
     @logger = Logger.new(nil)
 
     cache_path = options[:cache_path] if options[:cache_path]
@@ -53,11 +54,13 @@ class Proc
     data
   end
 
-  def tmp_cache_path
+  def make_cache_path_with_source_location
+    (file,line) = self.source_location
+    File.join(Dir.tmpdir, "#{File.basename($0)}_#{file}_#{line}.cache")
+  end
+
+  def make_cache_path
     File.join(Dir.tmpdir, "#{File.basename($0)}.cache")
   end
 end
-
-__END__
-p Proc.new{ sleep 3; 1 }.cache!(:expires => 1.hours)
 
