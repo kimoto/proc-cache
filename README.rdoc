@@ -1,18 +1,26 @@
 = proc-cache
+プロシージャ(Proc)の実行結果をキャッシュします
+  proc{ sleep 3; "heavy task" }.cache!
+    => "heavy task" # 3秒後に"heavy task"という文字列が戻ってくる
+  proc{ sleep 3; "heavy task" }.cache!
+    => "heavy task" # ただちに"heavy task"という文字列が戻ってくる
 
-Description goes here.
+= いろんな書き方
+  proc{ ... }.cache!
+  lambda{ ... }.cache!
+  Proc.new{ ... }.cache!
 
-== Note on Patches/Pull Requests
- 
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but
-   bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
+= オプション
+== キャッシュの有効期限を設定する
+Proc#cache!(:expires => キャッシュを保持する秒数)
+  require 'active_support/all'
+  proc{...}.cache! :expires => 2.hours # 2時間経過するまでキャッシュを使う
 
-== Copyright
+== 内部動作を確認したいとき
+ロガー渡せます
+  proc{...}.cache! :logger => Logger.new(STDERR) 
 
-Copyright (c) 2011 kimoto. See LICENSE for details.
+== キャッシュのパスを変更したいとき
+デフォルトだと/tmp/実行スクリプト名.cacheです。
+  proc{...}.cache! :cache_path => './test.cache'
+
